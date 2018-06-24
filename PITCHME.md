@@ -60,7 +60,7 @@ public Supplier<Integer> getRandomizer(int seed) {
 ```
 ---
 
-### Lambdas in java. Application
+### Lambdas in java. Application 1
 
 ```java
 public void sortList(List<Integer> list) {
@@ -75,14 +75,15 @@ public void sortList(List<Integer> list) {
     }
     return list;
 }
-...
+```
+```java
 sortList(Arrays.asList(1,3,5,2,9)); // works
 sortList(Arrays.asList(3.14, 218.00, -1)); // does not :(. How to fix?
 
 ```
 ---
 
-### Lambdas in java. Application
+### Lambdas in java. Application 2
 
 ```java
 public <T extends Comparable> void sortList(List<T> list) {
@@ -99,14 +100,65 @@ public <T extends Comparable> void sortList(List<T> list) {
 }
 ```
 ```java
-...
 sortList(Arrays.asList(1,3,5,2,9)); // works
 sortList(Arrays.asList(3.14, 218.00, -1)); // works
 sortList(Arrays.asList("abc", "abb", "aba", "aaa")); // works too
-
 ```
 
 ---
+
+### Lambdas in java. Application 3
+
+```java
+@Data
+public class SomeDTO { // implements nothing because ... reasons
+    private String code;
+    private boolean someFlag;
+}
+```
+```java
+sortList(Arrays.asList(
+    new SomeDTO("01", true),
+    new SomeDTO("02", false)
+)); // compilation error, how to fix?
+```
+
+---
+
+### Lambdas in java. Application 4
+
+```java
+public interface Comparable<T> {
+    /* ...
+     * @return  a negative integer, zero, or a positive integer as this object
+     *          is less than, equal to, or greater than the specified object.
+     */
+    public int compareTo(T o);
+}
+```
+
+```java
+public <T> void sortList(Comparator<T> comparator, List<T> list) {
+    for (int i = 0; i < list.size(); i++) {
+        for (int j = i+1; j < list.size(); j++) {
+            if (comparator.compare(list.get(i), list.get(j)) > 0) {
+                T tmp = list.get(i);
+                list.set(i, list.get(j));
+                list.set(j, tmp);
+            }
+        }
+    }
+    return list;
+}
+```
+```java
+sortList((o1, o2) -> o1.getCode().compareTo(o2.getCode()), Arrays.asList(
+    new SomeDTO("01", true),
+    new SomeDTO("02", false)
+)); // works!
+```
+
+-----------------------------------------------------------------------------------
 
 ![Flux Explained](https://facebook.github.io/flux/img/flux-simple-f8-diagram-explained-1300w.png)
 
