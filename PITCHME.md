@@ -85,7 +85,7 @@ sortList(Arrays.asList(3.14, 218.00, -1)); // does not :(. How to fix?
 ### Lambdas in java. Application
 
 ```java
-public <T> void sortList(List<T> list) {
+public <T extends Comparable> void sortList(List<T> list) {
     for (int i = 0; i < list.size(); i++) {
         for (int j = i+1; j < list.size(); j++) {
             if (list.get(i) > list.get(j)) {
@@ -97,6 +97,8 @@ public <T> void sortList(List<T> list) {
     }
     return list;
 }
+```
+```java
 ...
 sortList(Arrays.asList(1,3,5,2,9)); // works
 sortList(Arrays.asList(3.14, 218.00, -1)); // works
