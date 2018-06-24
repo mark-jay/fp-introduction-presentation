@@ -18,7 +18,7 @@ Introduction
 
 | Syntax        | Name           | Description  |
 | ------------- |:--------------:| ------------:|
-| x             |	Variable     |	A character or string representing a parameter or mathematical/logical value |
+| x             |	Variable     |	A character or string representing a parameter or value |
 | (λx.M)        |	Abstraction  |	Function definition (M is a lambda term). The variable x becomes bound in the expression. |
 | (M N)	        | Application    |	Applying a function to an argument. M and N are lambda terms. |
 
