@@ -159,7 +159,8 @@ public <T> void sortList(Comparator<T> comparator, List<T> list) {
 
 ```java
 sortList(
-    (o1, o2) -> o1.getCode().compareTo(o2.getCode()), Arrays.asList(
+    (o1, o2) -> o1.getCode().compareTo(o2.getCode()),
+    Arrays.asList(
         new SomeDTO("01", true),
         new SomeDTO("02", false)
     )
