@@ -17,11 +17,12 @@ Introduction
 
 Colons can be used to align columns.
 
-| Tables        | Are           | Cool  |
-| ------------- |:-------------:| -----:|
-| x |	Variable |	A character or string representing a parameter or mathematical/logical value |
-| col 2 is      | centered      |   $12 |
-| zebra stripes | are neat      |    $1 |
+| Syntax        | Name           | Description  |
+| ------------- |:--------------:| ------------:|
+| x             |	Variable     |	A character or string representing a parameter or mathematical/logical value |
+| (λx.M)        |	Abstraction  |	Function definition (M is a lambda term). The variable x becomes bound in the expression. |
+| (M N)	        | Application    |	Applying a function to an argument. M and N are lambda terms. |
+
 
 There must be at least 3 dashes separating each header cell.
 The outer pipes (|) are optional, and you don't need to make the
