@@ -152,11 +152,29 @@ public <T> void sortList(Comparator<T> comparator, List<T> list) {
    return list;
 }
 ```
+
+---
+
+### Lambdas in java. Application 5
+
 ```java
 sortList((o1, o2) -> o1.getCode().compareTo(o2.getCode()), Arrays.asList(
     new SomeDTO("01", true),
     new SomeDTO("02", false)
 )); // works!
+sortList((o1, o2) -> o1.getCreatedOn().compareTo(o2.getCreatedOn()), Arrays.asList(
+    new SomeDTO("01", true),
+    new SomeDTO("02", false)
+)); // works too!
+sortList(
+    (o1, o2) -> o1.getCreatedOn().equals(o2.getCreatedOn()) ?
+        o1.getCreatedOn().compareTo(o2.getCreatedOn()) :
+        o1.getCode().compareTo(o2.getCode()),
+    Arrays.asList(
+        new SomeDTO("01", true),
+        new SomeDTO("02", false)
+    )
+); // works too!
 ```
 
 -----------------------------------------------------------------------------------
