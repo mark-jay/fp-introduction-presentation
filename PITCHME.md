@@ -166,6 +166,8 @@ sortList((o1, o2) -> o1.getCreatedOn().compareTo(o2.getCreatedOn()), Arrays.asLi
     new SomeDTO("01", true),
     new SomeDTO("02", false)
 )); // works too!
+```
+```java
 sortList(
     (o1, o2) -> o1.getCreatedOn().equals(o2.getCreatedOn()) ?
         o1.getCreatedOn().compareTo(o2.getCreatedOn()) :
@@ -174,7 +176,7 @@ sortList(
         new SomeDTO("01", true),
         new SomeDTO("02", false)
     )
-); // works too!
+); // and even this works
 ```
 
 -----------------------------------------------------------------------------------
