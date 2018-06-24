@@ -172,7 +172,10 @@ sortList(
         o1.getCode().compareTo(o2.getCode()) :
         o1.getCreatedOn().compareTo(o2.getCreatedOn()),
     getListToSort()
-); // and even this works. But how to fix boilerplate we introduced? And what if it's null?
+);
+// and even this works.
+// But how to fix boilerplate we introduced?
+// And what if it's null?
 ```
 
 
