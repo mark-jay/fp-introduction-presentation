@@ -128,12 +128,13 @@ sortList(Arrays.asList(
 ### Lambdas in java. Application 4
 
 ```java
-public interface Comparable<T> {
+public interface Comparator<T> {
     /* ...
-     * @return  a negative integer, zero, or a positive integer as this object
-     *          is less than, equal to, or greater than the specified object.
+     * @return a negative integer, zero, or a positive integer as the
+     *         first argument is less than, equal to, or greater than the
+     *         second.
      */
-    public int compareTo(T o);
+    int compare(T o1, T o2);
 }
 ```
 
