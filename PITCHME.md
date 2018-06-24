@@ -30,10 +30,12 @@ Introduction
 - (λx.x+1)3
 - (λx.λy.(λz.(λx.z x) (λy.z y)) (x y))
 
+---
 
 ### Lambdas in java
 
 functions with no name and following syntax:
+
 ```java
  ()  -> 1
  ()  -> { System.out.println("Hello world"); }
