@@ -254,7 +254,8 @@ sortList(
 ### Lambdas in java. Application 2.1
 
 ```java
-List<Integer> list = new ArrayList<Integer>(Arrays.asList(1,2,3,-1,-2,-3));
+List<Integer> list = new ArrayList<Integer>(
+    Arrays.asList(1,2,3,-1,-2,-3));
 ```
 ```java
 for (Integer i : list) {
@@ -273,13 +274,14 @@ for (Integer i : list) {
 ### Lambdas in java. Application 2.2
 
 ```java
-List<Integer> list = new ArrayList<Integer>(Arrays.asList(1,2,3,-1,-2,-3));
+List<Integer> list = new ArrayList<Integer>(
+   Arrays.asList(1,2,3,-1,-2,-3));
 ```
 ```java
 ArrayList<Integer> result = new ArrayList<>();
 for (Integer i : list) {
     if (i >= 0) {
-        result.add(i); // concurrent modification exception
+        result.add(i); // no concurrent modification exception
     }
 }
 for (Integer i : result) {
@@ -303,7 +305,7 @@ result.foreach(System.out::println);
 
 ---
 
-### Lambdas in java. Application 2.3
+### Lambdas in java. Application 2.4
 
 more usages:
 
@@ -315,7 +317,8 @@ Double totalDebtAmount = userList.stream()
 ```
 
 ```java
-"Email : " + user.getContact().getPrimaryContactEmail().getEmail(); // ->
+"Email : " + user.getContact().getPrimaryContactEmail()
+    .getEmail(); // ->
 "Email : " + Optional.of(user)
     .map(User::getContact)
     .map(Contact::getPrimaryContactEmail)
@@ -328,8 +331,8 @@ Double totalDebtAmount = userList.stream()
 ### Principles
 
 - Declarative ( declarations as opposed to statements )
-- Immutable data
-- Functions are pure just like in math
+- Immutable data ( SOLID design, dependencies isolation, number of possible test cases )
+- Functions are pure just like in math. ( And this can be proven by a compiler. Services analogy )
 
 
 ---
