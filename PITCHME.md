@@ -7,7 +7,9 @@ Introduction
 ### Overview
 
 - History. Why lambdas and closures?
-
+- Lambdas in java. Sort example
+- Lambdas in java. Streams
+- Principles
 
 ---
 
@@ -60,7 +62,7 @@ public Supplier<Integer> getRandomizer(int seed) {
 ```
 ---
 
-### Lambdas in java. Application 1
+### Lambdas in java. Application 1.1
 
 ```java
 public void sortList(List<Integer> list) {
@@ -83,7 +85,7 @@ sortList(Arrays.asList(3.14, 218.00, -1)); // does not :(. How to fix?
 ```
 ---
 
-### Lambdas in java. Application 2
+### Lambdas in java. Application 1.2
 
 ```java
 public <T extends Comparable> void sortList(List<T> list) {
@@ -107,7 +109,7 @@ sortList(Arrays.asList("abc", "abb", "aba", "aaa")); // works too
 
 ---
 
-### Lambdas in java. Application 3
+### Lambdas in java. Application 1.3
 
 ```java
 @Data
@@ -125,7 +127,7 @@ sortList(Arrays.asList(
 
 ---
 
-### Lambdas in java. Application 4
+### Lambdas in java. Application 1.4
 
 ```java
 public interface Comparator<T> {
@@ -155,7 +157,7 @@ public <T> void sortList(Comparator<T> comparator, List<T> list) {
 
 ---
 
-### Lambdas in java. Application 5
+### Lambdas in java. Application 1.5
 
 ```java
 sortList(
@@ -180,16 +182,35 @@ sortList(
 
 ---
 
-### Lambdas in java. Application 6
+### Lambdas in java. Application 1.6
+
+```java
+sortList(
+    compareBy(x -> x.getCode()),
+    getListToSort()
+); // works!
+sortList(
+    compareBy(x -> x.getCreatedOn()),
+    getListToSort()
+); // works too!
+```
+```java
+sortList(
+    compareBy(x -> x.getCreatedOn(), x -> x.getCode()),
+    getListToSort()
+);
+```
+
+---
+
+### Lambdas in java. Application 1.7
 
 ```java
     public static <T, U extends Comparable<U>>
         Comparator<T> comparing(
             Function<T, U> keyExtractor)
     {
-        Objects.requireNonNull(keyExtractor);
-        return (Comparator<T> & Serializable)
-            (c1, c2) -> keyExtractor.apply(c1)
+        return (c1, c2) -> keyExtractor.apply(c1)
                 .compareTo(keyExtractor.apply(c2));
     }
 
@@ -201,17 +222,106 @@ sortList(
     {
         Objects.requireNonNull(keyExtractor);
         return (Comparator<T> & Serializable)
-            (c1, c2) -> keyExtractor.apply(c1).compareTo(keyExtractor.apply(c2));
+            (c1, c2) -> keyExtractor.apply(c1)
+                 .compareTo(keyExtractor.apply(c2));
     }
 ```
 
+---
+
+### Lambdas in java. Application 1.8
+
+```java
+sortList(
+    comparing(SomeDTO::getCode),
+    getListToSort()
+); // works!
+sortList(
+    comparing(SomeDTO::getCreatedOn),
+    getListToSort()
+); // works too!
+```
+```java
+sortList(
+    comparing(SomeDTO::getCreatedOn)
+        .thenComparing(SomeDTO::getCode)
+    getListToSort()
+);
+```
+
+---
+
+### Lambdas in java. Application 2.1
+
+```java
+List<Integer> list = new ArrayList<Integer>(Arrays.asList(1,2,3,-1,-2,-3));
+```
+```java
+for (Integer i : list) {
+    if (i < 0) {
+        list.remove(str);
+    }
+}
+for (Integer i : list) {
+    System.out.println(i);
+}
+```
 
 
 ---
 
------------------------------------------------------------------------------------
+### Lambdas in java. Application 2.2
 
-![Flux Explained](https://facebook.github.io/flux/img/flux-simple-f8-diagram-explained-1300w.png)
+```java
+List<Integer> list = new ArrayList<Integer>(Arrays.asList(1,2,3,-1,-2,-3));
+```
+```java
+ArrayList<Integer> result = new ArrayList<>();
+for (Integer i : list) {
+    if (i >= 0) {
+        result.add(i); // concurrent modification exception
+    }
+}
+for (Integer i : result) {
+    System.out.println(i);
+}
+```
+
+---
+
+### Lambdas in java. Application 2.3
+
+```java
+List<Integer> list = new ArrayList<Integer>(Arrays.asList(1,2,3,-1,-2,-3));
+```
+```java
+ArrayList<Integer> result = list.stream()
+    .filter(i -> i >= 0)
+    .collect(Collectors.toList());
+result.foreach(System.out::println);
+```
+
+---
+
+### Lambdas in java. Application 2.3
+
+more usages:
+
+```java
+Double totalDebtAmount = userList.stream()
+    .filter(user -> user.createdOn().after(someDate))
+    .mapToDouble(User::getDebtAmount)
+    .sum();
+```
+
+```java
+"Email : " + user.getContact().getPrimaryContactEmail().getEmail(); // ->
+"Email : " + Optional.of(user)
+    .map(User::getContact)
+    .map(Contact::getPrimaryContactEmail)
+    .map(ContactEmail::getEmail)
+    .orElse("n/a");
+```
 
 ---
 
@@ -220,3 +330,10 @@ sortList(
 - Declarative ( declarations as opposed to statements )
 - Immutable data
 - Functions are pure just like in math
+
+
+---
+
+-----------------------------------------------------------------------------------
+
+![Flux Explained](https://facebook.github.io/flux/img/flux-simple-f8-diagram-explained-1300w.png)
