@@ -180,21 +180,24 @@ sortList(
 
 ---
 
-### Lambdas in java. Application 5
+### Lambdas in java. Application 6
 
 ```java
-    public static <T, U extends Comparable<U>> Comparator<T> comparing(
+    public static <T, U extends Comparable<U>>
+        Comparator<T> comparing(
             Function<T, U> keyExtractor)
     {
         Objects.requireNonNull(keyExtractor);
         return (Comparator<T> & Serializable)
-            (c1, c2) -> keyExtractor.apply(c1).compareTo(keyExtractor.apply(c2));
+            (c1, c2) -> keyExtractor.apply(c1)
+                .compareTo(keyExtractor.apply(c2));
     }
 
 ```
 ```java
-    public static <T, U extends Comparable<? super U>> Comparator<T> comparing(
-            Function<? super T, ? extends U> keyExtractor)
+    public static
+        <T, U extends Comparable<? super U>> Comparator<T>
+        comparing(Function<? super T, ? extends U> keyExtractor)
     {
         Objects.requireNonNull(keyExtractor);
         return (Comparator<T> & Serializable)
