@@ -442,3 +442,7 @@ ViewObservable.clicks(mCardNameEditText, false)
 - less cases to test
 - just like any other design pattern - SOLID.
 -  ( SOLID design, dependencies isolation, number of possible test cases )
+
+---
+
+### The end
