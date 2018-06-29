@@ -1,6 +1,9 @@
 # Functional programming
 
 Introduction
+https://github.com/mark-jay/fp-introduction-presentation/tree/master
+https://gitpitch.com/mark-jay/fp-introduction-presentation/develop
+
 
 ---
 
@@ -52,7 +55,7 @@ In java lambdas are functions with no name and with the following syntax:
 
 ---
 
-### Funarg problem and solution. Closures in java
+### Closures in java
 
 ```java
 public Supplier<Integer> getRandomizer(int seed) {
@@ -80,8 +83,30 @@ public void sortList(List<Integer> list) {
 ```
 ```java
 sortList(Arrays.asList(1,3,5,2,9)); // works
-sortList(Arrays.asList(3.14, 218.00, -1)); // does not :(. How to fix?
 
+```
+---
+
+### Lambdas in java. Application 1.1.1
+
+```java
+public void sortList(List<Integer> list) {
+    for (int i = 0; i < list.size(); i++) {
+        for (int j = i+1; j < list.size(); j++) {
+            if (list.get(i) > list.get(j)) {
+                Integer tmp = list.get(i);
+                list.set(i, list.get(j));
+                list.set(j, tmp);
+            }
+        }
+    }
+    return list;
+}
+```
+```java
+sortList(Arrays.asList(1,3,5,2,9)); // works
+sortList(Arrays.asList(3.14, 218.00, -1)); // does not :(.
+// How to fix?
 ```
 ---
 
@@ -91,7 +116,7 @@ sortList(Arrays.asList(3.14, 218.00, -1)); // does not :(. How to fix?
 public <T extends Comparable> void sortList(List<T> list) {
     for (int i = 0; i < list.size(); i++) {
         for (int j = i+1; j < list.size(); j++) {
-            if (list.get(i) > list.get(j)) {
+            if (list.get(i).compareTo(list.get(j)) > 0) {
                 T tmp = list.get(i);
                 list.set(i, list.get(j));
                 list.set(j, tmp);
@@ -113,7 +138,7 @@ sortList(Arrays.asList("abc", "abb", "aba", "aaa")); // works too
 
 ```java
 @Data
-public class SomeDTO { // implements nothing because ... reasons
+public class SomeDTO { //implements nothing because...reasons
     private String code;
     private boolean someFlag;
 }
@@ -128,6 +153,32 @@ sortList(Arrays.asList(
 ---
 
 ### Lambdas in java. Application 1.4
+
+```java
+public interface Comparator<T> {
+    /* ...
+     * @return a negative integer, zero, or a positive integer as the
+     *         first argument is less than, equal to, or greater than the
+     *         second.
+     */
+    int compare(T o1, T o2);
+}
+```
+
+```java
+public interface Comparable<T> {
+    /*
+     * ...
+     * @return  a negative integer, zero, or a positive integer as this object
+     *          is less than, equal to, or greater than the specified object.
+     * ...
+     */
+    public int compareTo(T o);
+```
+
+---
+
+### Lambdas in java. Application 1.4.1
 
 ```java
 public interface Comparator<T> {
@@ -164,10 +215,15 @@ sortList(
     (o1, o2) -> o1.getCode().compareTo(o2.getCode()),
     getListToSort()
 ); // works!
+
 sortList((o1, o2) -> o1.getCreatedOn().compareTo(o2.getCreatedOn()),
     getListToSort()
 ); // works too!
 ```
+---
+
+### Lambdas in java. Application 1.5.1
+
 ```java
 sortList(
     (o1, o2) -> o1.getCreatedOn().equals(o2.getCreatedOn()) ?
@@ -175,6 +231,7 @@ sortList(
         o1.getCreatedOn().compareTo(o2.getCreatedOn()),
     getListToSort()
 );
+
 // and even this works.
 // But how to fix boilerplate we introduced?
 // And what if it's null?
@@ -188,12 +245,13 @@ sortList(
 sortList(
     compareBy(x -> x.getCode()),
     getListToSort()
-); // works!
+);
 sortList(
     compareBy(x -> x.getCreatedOn()),
     getListToSort()
-); // works too!
+);
 ```
+
 ```java
 sortList(
     compareBy(x -> x.getCreatedOn(), x -> x.getCode()),
@@ -215,17 +273,6 @@ sortList(
     }
 
 ```
-```java
-    public static
-        <T, U extends Comparable<? super U>> Comparator<T>
-        comparing(Function<? super T, ? extends U> keyExtractor)
-    {
-        Objects.requireNonNull(keyExtractor);
-        return (Comparator<T> & Serializable)
-            (c1, c2) -> keyExtractor.apply(c1)
-                 .compareTo(keyExtractor.apply(c2));
-    }
-```
 
 ---
 
@@ -235,11 +282,12 @@ sortList(
 sortList(
     comparing(SomeDTO::getCode),
     getListToSort()
-); // works!
+);
+
 sortList(
     comparing(SomeDTO::getCreatedOn),
     getListToSort()
-); // works too!
+);
 ```
 ```java
 sortList(
@@ -255,7 +303,7 @@ sortList(
 
 ```java
 List<Integer> list = new ArrayList<Integer>(
-    Arrays.asList(1,2,3,-1,-2,-3));
+    Arrays.asList(1, 2, 3, -1, -2, -3));
 ```
 ```java
 for (Integer i : list) {
@@ -275,7 +323,7 @@ for (Integer i : list) {
 
 ```java
 List<Integer> list = new ArrayList<Integer>(
-   Arrays.asList(1,2,3,-1,-2,-3));
+   Arrays.asList(1, 2, 3, -1, -2, -3));
 ```
 ```java
 ArrayList<Integer> result = new ArrayList<>();
@@ -316,6 +364,12 @@ Double totalDebtAmount = userList.stream()
     .sum();
 ```
 
+---
+
+### Lambdas in java. Application 2.4.1
+
+more usages:
+
 ```java
 "Email : " + user.getContact().getPrimaryContactEmail()
     .getEmail(); // ->
@@ -328,8 +382,63 @@ Double totalDebtAmount = userList.stream()
 
 ---
 
+### Bash
+
+find number of lines in the current project
+
+```bash
+$ find . -type f | grep java | xargs cat |wc -l
+```
+
+---
+
+### Bash
+
+find 5 biggest files in the project
+
+```
+find . -type f | grep 'java$' | xargs -n1 wc -l | sort -nr | head -n5
+```
+
+---
+
+### RxJava
+
+- pull based
+- stream-like
+- observer pattern
+- composing asynchronous components
+- supports different JVM langs
+
+---
+
+### RxAndroid
+
+```java
+retrofitService.getImage(url)
+    .subscribeOn(Schedulers.io())
+    .observeOn(AndroidSchedulers.mainThread())
+    .subscribe(bitmap -> myImageView.setImageBitmap(bitmap));
+```
+
+```java
+ViewObservable.clicks(mCardNameEditText, false)
+    .subscribe(view -> handleClick(view));
+```
+
+---
+
 ### Principles
 
 - Declarative ( declarations as opposed to statements )
 - Immutable data ( SOLID design, dependencies isolation, number of possible test cases )
 - Functions are pure just like in math. ( And this can be proven by a compiler. Services analogy )
+
+---
+
+### Principles - Immutable data
+
+- limited number of vars to remember
+- less cases to test
+- just like any other design pattern - SOLID.
+-  ( SOLID design, dependencies isolation, number of possible test cases )
